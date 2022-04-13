@@ -3,7 +3,7 @@ package com.epam.jwd.task2.controller;
 import com.epam.jwd.task2.model.entity.CompositeTextElement;
 import com.epam.jwd.task2.model.entity.TextElement;
 import com.epam.jwd.task2.model.entity.composite.Text;
-import com.epam.jwd.task2.model.logic.Validator.UserEntryValidator;
+import com.epam.jwd.task2.model.logic.validator.UserEntryValidator;
 import com.epam.jwd.task2.model.logic.parser.TextParser;
 import com.epam.jwd.task2.model.logic.task10.SorterSpecialWord;
 import com.epam.jwd.task2.model.logic.task10.SpecialWordCounter;

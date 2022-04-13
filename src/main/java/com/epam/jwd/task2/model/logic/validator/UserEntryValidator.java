@@ -1,4 +1,4 @@
-package com.epam.jwd.task2.model.logic.Validator;
+package com.epam.jwd.task2.model.logic.validator;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
