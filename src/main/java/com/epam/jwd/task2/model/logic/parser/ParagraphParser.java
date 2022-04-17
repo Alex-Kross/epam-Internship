@@ -15,8 +15,8 @@ public class ParagraphParser extends TextElementParser {
     /** Regex for search block of code  */
     private final String FIRST_STRING_OF_CODE = "^[a-zA-Z].+(([{]\s*/{2}.*)$|.+([{]\s*)$|.+([{]\s*/\\*.*\\*/\s*)$)";
 
-    private final Pattern blockCodePattern = Pattern.compile(FIRST_STRING_OF_CODE);
-    private final Pattern paragraphPattern = Pattern.compile(EMPTY_STRING);
+    private final Pattern BLOCK_CODE_PATTERN = Pattern.compile(FIRST_STRING_OF_CODE);
+    private final Pattern PARAGRAPH_PATTERN = Pattern.compile(EMPTY_STRING);
 
     private boolean isStartCodeBlock =false;
     private Paragraph paragraph;
@@ -30,8 +30,8 @@ public class ParagraphParser extends TextElementParser {
         if (text == null) {
             throw new RuntimeException("text is null");
         }
-        Matcher paragraphMatcher = paragraphPattern.matcher(textString);
-        Matcher blockCodeMatcher = blockCodePattern.matcher(textString);
+        Matcher paragraphMatcher = PARAGRAPH_PATTERN.matcher(textString);
+        Matcher blockCodeMatcher = BLOCK_CODE_PATTERN.matcher(textString);
 
         if (blockCodeMatcher.find() && !isStartCodeBlock) {     //if the beginning of the code block is found
             paragraph = new Paragraph();

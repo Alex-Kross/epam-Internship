@@ -24,10 +24,10 @@ public class SentenceParser extends TextElementParser {
     /** Regex for search word  */
     private final String WORD = "([^.,':!?;/[\"][\\[][\\]][(][)] ])+\\s*";
 
-    private final Pattern textStringPattern = Pattern.compile(TEXT_STRING);
-    private final Pattern sentencePattern = Pattern.compile(SENTENCE);
-    private final Pattern punctMarkPattern = Pattern.compile(PUNCT_MARK);
-    private final Pattern wordPattern = Pattern.compile(WORD);
+    private final Pattern TEXT_STRING_PATTERN = Pattern.compile(TEXT_STRING);
+    private final Pattern SENTENCE_PATTERN = Pattern.compile(SENTENCE);
+    private final Pattern PUNCT_MARK_PATTERN = Pattern.compile(PUNCT_MARK);
+    private final Pattern WORD_PATTERN = Pattern.compile(WORD);
 
     /** contain sentence */
     private Sentence sentence = new Sentence();
@@ -36,7 +36,7 @@ public class SentenceParser extends TextElementParser {
 
     @Override
     public void parse(String textString, CompositeTextElement paragraph) {
-        Matcher textStringMatcher = textStringPattern.matcher(textString);
+        Matcher textStringMatcher = TEXT_STRING_PATTERN.matcher(textString);
 
         // if string is text
         if(textStringMatcher.find()){
@@ -49,8 +49,8 @@ public class SentenceParser extends TextElementParser {
             // index the end of string
             int lastIndex = textStringMatcher.end();
 
-            Matcher sentenceMatcher = sentencePattern.matcher(textStringMatcher.group());
-            Matcher punctMarkMatcher = punctMarkPattern.matcher(textStringMatcher.group());
+            Matcher sentenceMatcher = SENTENCE_PATTERN.matcher(textStringMatcher.group());
+            Matcher punctMarkMatcher = PUNCT_MARK_PATTERN.matcher(textStringMatcher.group());
 
             while (sentenceMatcher.find()){
                 listIndexDots.add(sentenceMatcher.end());
@@ -59,7 +59,7 @@ public class SentenceParser extends TextElementParser {
             while (punctMarkMatcher.find()) {   // find punctuation mark
                 // str before punctuation mark
                 String strBeforePunctMark = textString.substring(currentIndex, punctMarkMatcher.start());
-                Matcher wordMatcher = wordPattern.matcher(strBeforePunctMark);
+                Matcher wordMatcher = WORD_PATTERN.matcher(strBeforePunctMark);
                 currentIndex = punctMarkMatcher.end();  // move current index
 
                 while (wordMatcher.find()) {            // add all words in sentence
@@ -80,7 +80,7 @@ public class SentenceParser extends TextElementParser {
             // if string without punctuation marks or string finish not punctuation mark
             if (lastIndex > currentIndex) {
                 String strWithoutPunctMark = textStringMatcher.group().substring(currentIndex);
-                Matcher wordMatcher = wordPattern.matcher(strWithoutPunctMark);
+                Matcher wordMatcher = WORD_PATTERN.matcher(strWithoutPunctMark);
                 while (wordMatcher.find()) {        // add all words in sentence
                     String word = wordMatcher.group();
                     sentence.add(new Word(word));

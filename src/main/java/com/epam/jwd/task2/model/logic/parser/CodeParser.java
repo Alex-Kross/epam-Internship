@@ -14,19 +14,19 @@ public class CodeParser extends TextElementParser{
     /** Regex for search opening curly brace */
     private final String FIRST_CURLY_BRACE = "[{]+";
 
-    /** Regex for search closeing curly brace */
+    /** Regex for search closing curly brace */
     private final String LAST_CURLY_BRACE = "[}]+";
 
     /** Regex for search init package and import package */
     private final String PACKAGE_STRING = "(^(package\s+)|^(import\s+))([a-zA-Z]+\\.)+[a-zA-Z]+\s*([;]\s*)$";
 
-    private final Pattern majorPattern = Pattern.compile(FIRST_STRING_OF_CODE);
-    private final Pattern firstBracePattern = Pattern.compile(FIRST_CURLY_BRACE);
-    private final Pattern lastBracePattern = Pattern.compile(LAST_CURLY_BRACE);
-    private final Pattern packagePattern = Pattern.compile(PACKAGE_STRING);
+    private final Pattern MAJOR_PATTERN = Pattern.compile(FIRST_STRING_OF_CODE);
+    private final Pattern FIRST_BRACE_PATTERN = Pattern.compile(FIRST_CURLY_BRACE);
+    private final Pattern LAST_BRACE_PATTERN = Pattern.compile(LAST_CURLY_BRACE);
+    private final Pattern PACKAGE_PATTERN = Pattern.compile(PACKAGE_STRING);
 
     /** contain code block */
-    private final StringBuilder codeBlockString = new StringBuilder();
+    private final StringBuilder CODE_BLOCK_STRING = new StringBuilder();
 
     private int numberFirstCurlyBrace = 0;
     private int numberLastCurlyBrace = 0;
@@ -38,21 +38,21 @@ public class CodeParser extends TextElementParser{
 
     @Override
     public void parse(String textString, CompositeTextElement paragraph) {
-        Matcher majorMatcher = majorPattern.matcher(textString);
-        Matcher firstBraceMatcher = firstBracePattern.matcher(textString);
-        Matcher lastBraceMatcher = lastBracePattern.matcher(textString);
-        Matcher packageMatcher = packagePattern.matcher(textString);
+        Matcher majorMatcher = MAJOR_PATTERN.matcher(textString);
+        Matcher firstBraceMatcher = FIRST_BRACE_PATTERN.matcher(textString);
+        Matcher lastBraceMatcher = LAST_BRACE_PATTERN.matcher(textString);
+        Matcher packageMatcher = PACKAGE_PATTERN.matcher(textString);
 
         // find string 'import namePack.namePack...namePack;' or 'package namePack.namePack...namePack';
         if (packageMatcher.find() ) {
-            codeBlockString.append(textString).append(RegEx.LINE_BRAKE.getRegEx());
-            paragraph.add(new CodeBlock(codeBlockString.toString()));
-            codeBlockString.setLength(0);//clear value
+            CODE_BLOCK_STRING.append(textString).append(RegEx.LINE_BRAKE.getRegEx());
+            paragraph.add(new CodeBlock(CODE_BLOCK_STRING.toString()));
+            CODE_BLOCK_STRING.setLength(0);//clear value
             return;
         }
         else if (majorMatcher.find()) {                             // find first string declaration any class
             numberFirstCurlyBrace++;
-            codeBlockString.append(textString).append(RegEx.LINE_BRAKE.getRegEx());
+            CODE_BLOCK_STRING.append(textString).append(RegEx.LINE_BRAKE.getRegEx());
         }
         else if(numberFirstCurlyBrace != numberLastCurlyBrace){     // calculate number first curly brace and last
             while(firstBraceMatcher.find()){
@@ -61,7 +61,7 @@ public class CodeParser extends TextElementParser{
             while(lastBraceMatcher.find()){
                 numberLastCurlyBrace++;
             }
-            codeBlockString.append(textString).append(RegEx.LINE_BRAKE.getRegEx());
+            CODE_BLOCK_STRING.append(textString).append(RegEx.LINE_BRAKE.getRegEx());
         }
         if(numberFirstCurlyBrace == numberLastCurlyBrace){          // if number curly braces are equal
             if (numberFirstCurlyBrace == 0 && numberLastCurlyBrace == 0) {  // if curly braces stay unchanged
@@ -70,8 +70,8 @@ public class CodeParser extends TextElementParser{
             }else{
                 // block code found
                 isEndCodeBlock = true;
-                paragraph.add(new CodeBlock(codeBlockString.toString()));
-                codeBlockString.setLength(0);//clear value
+                paragraph.add(new CodeBlock(CODE_BLOCK_STRING.toString()));
+                CODE_BLOCK_STRING.setLength(0);//clear value
                 numberLastCurlyBrace = 0;
                 numberFirstCurlyBrace = 0;
             }

@@ -23,7 +23,7 @@ public class Main {
     private static final String INPUT_TEXT_FILE = "src/main/resources/inputFile.txt";
     private static final String OUTPUT_TEXT_FILE = "src/main/resources/outputFile.txt";
     private static final String SPECIAL_WORDS_FILE = "src/main/resources/listSpecialWords.txt";
-    private static final String listOperation = "\n1 - Parsing text\n2 - Run task1\n3 - Run task2\n4 - Run task5\n0 - Exit:\nEnter: ";
+    private static final String LIST_OPERATION = "\n1 - Parsing text\n2 - Run task1\n3 - Run task2\n4 - Run task5\n0 - Exit:\nEnter: ";
 
     public static void main(String[] args){
         List<String> specialWords;
@@ -36,7 +36,7 @@ public class Main {
         textWriter.writeText(OUTPUT_TEXT_FILE, "");     // clear outputFile
 
         while(loop){
-            Printer.printInConsoleMessage(listOperation);
+            Printer.printInConsoleMessage(LIST_OPERATION);
 
             try {
                 Scanner scanner = new Scanner(System.in);

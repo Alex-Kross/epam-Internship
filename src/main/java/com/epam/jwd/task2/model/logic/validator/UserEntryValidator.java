@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class UserEntryValidator {
     private final String USER_INPUT = "^\\d$";
-    private final Pattern userInputPattern = Pattern.compile(USER_INPUT);
+    private final Pattern USER_INPUT_PATTERN = Pattern.compile(USER_INPUT);
 
     public int validate(Scanner scanner){
         if (scanner == null) {
@@ -14,7 +14,7 @@ public class UserEntryValidator {
         }
         int number = 0;
         String userInput = scanner.next();
-        Matcher userInputMatcher = userInputPattern.matcher(userInput);
+        Matcher userInputMatcher = USER_INPUT_PATTERN.matcher(userInput);
 
         while (!userInputMatcher.find()){
             throw new RuntimeException("Input only number");
