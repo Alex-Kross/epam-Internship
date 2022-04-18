@@ -1,6 +1,7 @@
 package com.epam.jwd.task2.model.logic.task2;
 
 import com.epam.jwd.task2.model.entity.TextElement;
+import com.epam.jwd.task2.model.logic.exception.implEmptyException.implCollectionException.ListSentenceException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +26,10 @@ public class SentenceSorter {
      */
     public SentenceSorter(List<TextElement> sentenceList){
         if (sentenceList == null) {
-            throw new RuntimeException("List of sentences is null");
+            throw new NullPointerException("List of sentences is null");
+        }
+        if (sentenceList.size() == 0) {
+            throw new ListSentenceException("List of sentences is empty");
         }
         this.sentenceList = new ArrayList<>();
         this.sentenceList.addAll(sentenceList);
@@ -37,7 +41,10 @@ public class SentenceSorter {
      * */
     public void sortAscendingByNumberWords(){
         if (sentenceList == null) {
-            throw new RuntimeException("List of sentences is null");
+            throw new NullPointerException("List of sentences is null");
+        }
+        if (sentenceList.size() == 0) {
+            throw new ListSentenceException("List of sentences is empty");
         }
         Collections.sort(sentenceList, new NumberWordComparator());
     }

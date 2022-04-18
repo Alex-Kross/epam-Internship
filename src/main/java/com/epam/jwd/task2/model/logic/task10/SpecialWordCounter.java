@@ -1,6 +1,8 @@
 package com.epam.jwd.task2.model.logic.task10;
 
 import com.epam.jwd.task2.model.entity.TextElement;
+import com.epam.jwd.task2.model.logic.exception.implEmptyException.implCollectionException.ListSentenceException;
+import com.epam.jwd.task2.model.logic.exception.implEmptyException.implCollectionException.ListSpecialWordException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ public class SpecialWordCounter {
      * Key is sentence index. Value is list consist of number
      * each special word in sentence.
      * */
-    private Map<Integer, List<Integer>> numberSpecialWordsInSentences = new HashMap();
+    private Map<Integer, List<Integer>> numberSpecialWords = new HashMap();
 
     /** Contain list of special words for search in each sentence */
     private List<String> specialWords;
@@ -39,7 +41,13 @@ public class SpecialWordCounter {
      */
     public SpecialWordCounter(List<TextElement> sentenceList, List<String> specialWords) throws CloneNotSupportedException {
         if (sentenceList == null || specialWords == null) {
-            throw new RuntimeException("List of sentences or list of special words are null");
+            throw new NullPointerException("List of sentences is null or list of special words is null");
+        }
+        if (sentenceList.size() == 0) {
+            throw new ListSentenceException("List of sentences is empty");
+        }
+        if (specialWords.size() == 0) {
+            throw new ListSpecialWordException("List of special words is empty");
         }
         this.sentenceList = new ArrayList<>();
         this.sentenceList.addAll(sentenceList);
@@ -51,8 +59,8 @@ public class SpecialWordCounter {
      *
      * @return map for number special words in each sentence.
      */
-    public Map<Integer, List<Integer>> getNumberSpecialWordsInSentences() {
-        return numberSpecialWordsInSentences;
+    public Map<Integer, List<Integer>> getNumberSpecialWords() {
+        return numberSpecialWords;
     }
 
     /**
@@ -66,9 +74,15 @@ public class SpecialWordCounter {
      * In the end fill hashMap key consist of index of sentence
      * and value consist of list numberSpecialWords
      */
-    public void CalcNumberSpecialWordsInSen(){
+    public void CalcNumberSpecialWords(){
         if (sentenceList == null || specialWords == null) {
-            throw new RuntimeException("List of sentences or list of special words is null");
+            throw new NullPointerException("List of sentences is null or list of special words is null");
+        }
+        if (sentenceList.size() == 0) {
+            throw new ListSentenceException("List of sentences is empty");
+        }
+        if (specialWords.size() == 0) {
+            throw new ListSpecialWordException("List of special words is empty");
         }
         int indexSentence = 0;
 
@@ -88,7 +102,7 @@ public class SpecialWordCounter {
                 }
                 numberSpecialWords.add(numberSpecialWord);
             }
-            numberSpecialWordsInSentences.put(indexSentence, numberSpecialWords);
+            this.numberSpecialWords.put(indexSentence, numberSpecialWords);
             indexSentence++;
         }
     }

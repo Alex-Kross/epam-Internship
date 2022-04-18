@@ -3,6 +3,7 @@ package com.epam.jwd.task2.model.logic.task5;
 import com.epam.jwd.task2.model.entity.TextElement;
 import com.epam.jwd.task2.model.entity.composite.Sentence;
 import com.epam.jwd.task2.model.entity.leaf.Word;
+import com.epam.jwd.task2.model.logic.exception.implEmptyException.implCollectionException.ListSentenceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,12 @@ public class WordSwapper {
      */
     public WordSwapper(List<TextElement> sentenceList) throws CloneNotSupportedException {
         if (sentenceList == null) {
-            throw new RuntimeException("List of sentences is null");
+            throw new NullPointerException("List of sentences is null");
         }
+        if (sentenceList.size() == 0) {
+            throw new ListSentenceException("List of sentences is empty");
+        }
+
         this.sentenceList = new ArrayList<>();
         for (TextElement sentence : sentenceList) {
             this.sentenceList.add(((Sentence)sentence).clone());
@@ -53,8 +58,12 @@ public class WordSwapper {
      */
     public void reversPlaceLastAndFirstWord(){
         if (sentenceList == null) {
-            throw new RuntimeException("List of sentences is null");
+            throw new NullPointerException("List of sentences is null");
         }
+        if (sentenceList.size() == 0) {
+            throw new ListSentenceException("List of sentences is empty");
+        }
+
         for (TextElement sentence : sentenceList) {
             List<TextElement> wordsOrPunctMarks = ((Sentence)sentence).getWordsAndPunctMarks();
 

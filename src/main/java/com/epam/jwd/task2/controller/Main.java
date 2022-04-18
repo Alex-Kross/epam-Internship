@@ -3,12 +3,17 @@ package com.epam.jwd.task2.controller;
 import com.epam.jwd.task2.model.entity.CompositeTextElement;
 import com.epam.jwd.task2.model.entity.TextElement;
 import com.epam.jwd.task2.model.entity.composite.Text;
-import com.epam.jwd.task2.model.logic.validator.UserEntryValidator;
+import com.epam.jwd.task2.model.logic.exception.FileException;
+import com.epam.jwd.task2.model.logic.exception.UserInputException;
+import com.epam.jwd.task2.model.logic.exception.ValueEmptyException;
+import com.epam.jwd.task2.model.logic.exception.implFileException.FileErrorException;
+import com.epam.jwd.task2.model.logic.exception.implFileException.FileNotLocateException;
 import com.epam.jwd.task2.model.logic.parser.TextParser;
 import com.epam.jwd.task2.model.logic.task10.SorterSpecialWord;
 import com.epam.jwd.task2.model.logic.task10.SpecialWordCounter;
 import com.epam.jwd.task2.model.logic.task2.SentenceSorter;
 import com.epam.jwd.task2.model.logic.task5.WordSwapper;
+import com.epam.jwd.task2.model.logic.validator.UserEntryValidator;
 import com.epam.jwd.task2.util.ConverterToString;
 import com.epam.jwd.task2.util.GetterSensFromText;
 import com.epam.jwd.task2.util.Reader;
@@ -33,23 +38,26 @@ public class Main {
         int userChoice;
         boolean loop = true;
 
-        textWriter.writeText(OUTPUT_TEXT_FILE, "");     // clear outputFile
+        // clear outputFile
+        try {
+            textWriter.writeText(OUTPUT_TEXT_FILE, "");
+        } catch (FileNotLocateException | FileErrorException e) {
+            Printer.printInConsoleMessage(e.getMessage());
+        }
 
         while(loop){
             Printer.printInConsoleMessage(LIST_OPERATION);
-
             try {
                 Scanner scanner = new Scanner(System.in);
                 UserEntryValidator entryValidator = new UserEntryValidator();
                 userChoice = entryValidator.validate(scanner);
-
                 switch (userChoice) {
-                    case 1:     //parsing text
-                        CompositeTextElement text = new Text();
-                        String sourceText = textReader.readText(INPUT_TEXT_FILE);       // read from file
-                        TextParser.parseText(text, sourceText);                         // parsing
-                        textWriter.writeText(OUTPUT_TEXT_FILE, text.getElementText());  // write in file
-                        sentences = GetterSensFromText.getSentences(((Text) text));      // get list sentence
+                    case 1:     //parsing textElement
+                        CompositeTextElement textElement = new Text();
+                        String textFromSourceFile = textReader.readText(INPUT_TEXT_FILE);       // read from file
+                        TextParser.parseText(textElement, textFromSourceFile);                  // parsing
+                        textWriter.writeText(OUTPUT_TEXT_FILE, textElement.getElementText());   // write in file
+                        sentences = GetterSensFromText.getSentences(((Text) textElement));      // get list sentence
                         Printer.printInConsoleMessage("Text has parsed");
                         break;
                     case 2:     //task2
@@ -72,33 +80,36 @@ public class Main {
                         break;
                     case 4:     //task10
                         //read special words from file
-                        String specialWordsText = textReader.readText(SPECIAL_WORDS_FILE);
-                        specialWords = SpecialWordParser.parse(specialWordsText);
+                        String strSpecialWords = textReader.readText(SPECIAL_WORDS_FILE);
+                        specialWords = SpecialWordParser.parse(strSpecialWords);
 
                         // calculate number special words in each sentences
                         SpecialWordCounter task10Part1 = new SpecialWordCounter(sentences, specialWords);
-                        task10Part1.CalcNumberSpecialWordsInSen();
+                        task10Part1.CalcNumberSpecialWords();
 
                         // convert result to string
-                        String strNumberSpecialWord = ConverterToString.convertNumberSpecialWord(task10Part1.getNumberSpecialWordsInSentences(), specialWords);
+                        String strNumberSpecialWord = ConverterToString.convertNumberSpecialWord(task10Part1.getNumberSpecialWords(), specialWords);
                         Printer.printInConsoleMessage(strNumberSpecialWord);
 
-                        // sort total number special words in text
-                        SorterSpecialWord task10Part2 = new SorterSpecialWord(task10Part1.getNumberSpecialWordsInSentences());
+                        // sort total number special words in textElement
+                        SorterSpecialWord task10Part2 = new SorterSpecialWord(task10Part1.getNumberSpecialWords());
                         task10Part2.sortInDescendingSpecialWords();
 
                         // convert result to string
-                        String strSorterSpecialWord = ConverterToString.convertSorterSpecialWord(task10Part2.getSortedTotalNumberSpecial(), specialWords);
+                        String strSorterSpecialWord = ConverterToString.convertSortedSpecialWord(task10Part2.getSortedSpecialWordIndexes(), specialWords);
                         Printer.printInConsoleMessage(strSorterSpecialWord);
                         break;
                     case 0:
                         loop = false;
                         break;
                     default:
-                        Printer.printInConsoleMessage("Incorrect input!");
+                        throw new UserInputException("Incorrect input!");
                 }
-            }
-            catch (RuntimeException |  CloneNotSupportedException e){
+            } catch (UserInputException | ValueEmptyException | FileException e) {
+                Printer.printInConsoleMessage(e.getMessage());
+            } catch (CloneNotSupportedException | RuntimeException e ) {
+                Printer.printInConsoleMessage(e.getMessage());
+            } catch (Exception e ) {
                 Printer.printInConsoleMessage(e.getMessage());
             }
         }

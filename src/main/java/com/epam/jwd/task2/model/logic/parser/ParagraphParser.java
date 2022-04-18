@@ -26,23 +26,23 @@ public class ParagraphParser extends TextElementParser {
     }
 
     @Override
-    public void parse(String textString, CompositeTextElement text) {
-        if (text == null) {
-            throw new RuntimeException("text is null");
+    public void parse(String textString, CompositeTextElement textElement) {
+        if (textElement == null) {
+            throw new NullPointerException("Text element is null");
         }
         Matcher paragraphMatcher = PARAGRAPH_PATTERN.matcher(textString);
         Matcher blockCodeMatcher = BLOCK_CODE_PATTERN.matcher(textString);
 
         if (blockCodeMatcher.find() && !isStartCodeBlock) {     //if the beginning of the code block is found
             paragraph = new Paragraph();
-            text.add(paragraph);
+            textElement.add(paragraph);
             isStartCodeBlock = true;
         }
         else if (isEndCodeBlock) {      //if the ending of the code block is found
                 isEndCodeBlock = false;
                 isStartCodeBlock = false;
                 paragraph = new Paragraph();
-                text.add(paragraph);
+                textElement.add(paragraph);
         }
 
         if (paragraphMatcher.find() && !isStartCodeBlock){      // if empty string found

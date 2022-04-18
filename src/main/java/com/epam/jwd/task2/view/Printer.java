@@ -13,6 +13,9 @@ public class Printer {
      * @param message string of text
      */
     public static void printInConsoleMessage(String message){
+        if (message == null) {
+            throw new NullPointerException("Message is null");
+        }
         System.out.println(message);
     }
 }

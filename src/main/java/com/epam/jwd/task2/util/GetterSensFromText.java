@@ -19,18 +19,15 @@ import java.util.List;
  * */
 public class GetterSensFromText {
     /**
-     * Takes only sentences from text and return list of sentences
+     * Takes only sentences from textElement and return list of sentences
      *
-     * @param text text
+     * @param textElement textElement
      */
-    public static List<TextElement> getSentences(Text text) throws CloneNotSupportedException {
-        if (text == null) {
-            throw new RuntimeException("text is null");
+    public static List<TextElement> getSentences(Text textElement) throws CloneNotSupportedException {
+        if (textElement == null) {
+            throw new NullPointerException("Text element is null");
         }
-
-        Text text1 = null;
-        text1 = text.clone();
-
+        Text text1 = textElement.clone();
         List<TextElement> sentenceList = new ArrayList<>();
 
         for (TextElement paragraph : text1.getParagraphs()) {

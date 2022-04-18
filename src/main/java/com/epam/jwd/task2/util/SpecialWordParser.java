@@ -1,7 +1,7 @@
 package com.epam.jwd.task2.util;
 
 import com.epam.jwd.task2.model.entity.RegEx;
-import com.epam.jwd.task2.model.logic.exception.implEmptyException.implStringException.SpecialWordException;
+import com.epam.jwd.task2.model.logic.exception.implEmptyException.FileEmptyException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +15,13 @@ public class SpecialWordParser {
     private static final Pattern SPECIAL_WORD_PATTERN = Pattern.compile(SPECIAL_WORD);
 
     public static List parse(String specialWordsText){
+        if (specialWordsText == null) {
+            throw new NullPointerException("Special words is null");
+        }
+
         Matcher listSpecialWordMatcher = LIST_SPECIAL_WORD_PATTERN.matcher(specialWordsText);
         if (!listSpecialWordMatcher.find()) {
-            throw new SpecialWordException("Special words is empty");
+            throw new FileEmptyException("File with special words is empty");
         }
 
         List<String> specialWords = new ArrayList<>();
