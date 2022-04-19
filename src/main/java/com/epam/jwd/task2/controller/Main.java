@@ -20,6 +20,8 @@ import com.epam.jwd.task2.util.Reader;
 import com.epam.jwd.task2.util.SpecialWordParser;
 import com.epam.jwd.task2.util.Writer;
 import com.epam.jwd.task2.view.Printer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Scanner;
@@ -29,6 +31,7 @@ public class Main {
     private static final String OUTPUT_TEXT_FILE = "src/main/resources/outputFile.txt";
     private static final String SPECIAL_WORDS_FILE = "src/main/resources/listSpecialWords.txt";
     private static final String LIST_OPERATION = "\n1 - Parsing text\n2 - Run task1\n3 - Run task2\n4 - Run task5\n0 - Exit:\nEnter: ";
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
     public static void main(String[] args){
         List<String> specialWords;
@@ -42,6 +45,7 @@ public class Main {
         try {
             textWriter.writeText(OUTPUT_TEXT_FILE, "");
         } catch (FileNotLocateException | FileErrorException e) {
+            LOGGER.warn(e.getMessage(), e);
             Printer.printInConsoleMessage(e.getMessage());
         }
 
@@ -106,10 +110,13 @@ public class Main {
                         throw new UserInputException("Incorrect input!");
                 }
             } catch (UserInputException | ValueEmptyException | FileException e) {
+                LOGGER.warn(e.getMessage(), e);
                 Printer.printInConsoleMessage(e.getMessage());
             } catch (CloneNotSupportedException | RuntimeException e ) {
+                LOGGER.warn(e.getMessage(), e);
                 Printer.printInConsoleMessage(e.getMessage());
             } catch (Exception e ) {
+                LOGGER.warn(e.getMessage(), e);
                 Printer.printInConsoleMessage(e.getMessage());
             }
         }
