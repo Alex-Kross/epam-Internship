@@ -9,13 +9,13 @@ import com.epam.jwd.task2.model.logic.exception.ValueEmptyException;
 import com.epam.jwd.task2.model.logic.exception.implFileException.FileErrorException;
 import com.epam.jwd.task2.model.logic.exception.implFileException.FileNotLocateException;
 import com.epam.jwd.task2.model.logic.parser.TextParser;
-import com.epam.jwd.task2.model.logic.task10.SorterSpecialWord;
+import com.epam.jwd.task2.model.logic.task10.SpecialWordSorter;
 import com.epam.jwd.task2.model.logic.task10.SpecialWordCounter;
 import com.epam.jwd.task2.model.logic.task2.SentenceSorter;
 import com.epam.jwd.task2.model.logic.task5.WordSwapper;
 import com.epam.jwd.task2.model.logic.validator.UserEntryValidator;
-import com.epam.jwd.task2.util.ConverterToString;
-import com.epam.jwd.task2.util.GetterSensFromText;
+import com.epam.jwd.task2.util.ToStringConverter;
+import com.epam.jwd.task2.util.SensFromTextGetter;
 import com.epam.jwd.task2.util.Reader;
 import com.epam.jwd.task2.util.SpecialWordParser;
 import com.epam.jwd.task2.util.Writer;
@@ -61,7 +61,7 @@ public class Main {
                         String textFromSourceFile = textReader.readText(INPUT_TEXT_FILE);       // read from file
                         TextParser.parseText(textElement, textFromSourceFile);                  // parsing
                         textWriter.writeText(OUTPUT_TEXT_FILE, textElement.getElementText());   // write in file
-                        sentences = GetterSensFromText.getSentences(((Text) textElement));      // get list sentence
+                        sentences = SensFromTextGetter.getSentences(((Text) textElement));      // get list sentence
                         Printer.printInConsoleMessage("Text has parsed");
                         break;
                     case 2:     //task2
@@ -70,7 +70,7 @@ public class Main {
                         task2.sortAscendingByNumberWords();
 
                         // convert result to string
-                        String strSentences = ConverterToString.convertSentences(task2.getSentenceList());
+                        String strSentences = ToStringConverter.convertSentences(task2.getSentenceList());
                         Printer.printInConsoleMessage(strSentences);
                         break;
                     case 3:     //task5
@@ -79,7 +79,7 @@ public class Main {
                         task5.reversPlaceLastAndFirstWord();
 
                         // convert result to string
-                        String strSentences2 = ConverterToString.convertSentences(task5.getSentenceList());
+                        String strSentences2 = ToStringConverter.convertSentences(task5.getSentenceList());
                         Printer.printInConsoleMessage(strSentences2);
                         break;
                     case 4:     //task10
@@ -92,15 +92,15 @@ public class Main {
                         task10Part1.CalcNumberSpecialWords();
 
                         // convert result to string
-                        String strNumberSpecialWord = ConverterToString.convertNumberSpecialWord(task10Part1.getNumberSpecialWords(), specialWords);
+                        String strNumberSpecialWord = ToStringConverter.convertNumberSpecialWord(task10Part1.getNumberSpecialWords(), specialWords);
                         Printer.printInConsoleMessage(strNumberSpecialWord);
 
                         // sort total number special words in textElement
-                        SorterSpecialWord task10Part2 = new SorterSpecialWord(task10Part1.getNumberSpecialWords());
+                        SpecialWordSorter task10Part2 = new SpecialWordSorter(task10Part1.getNumberSpecialWords());
                         task10Part2.sortInDescendingSpecialWords();
 
                         // convert result to string
-                        String strSorterSpecialWord = ConverterToString.convertSortedSpecialWord(task10Part2.getSortedSpecialWordIndexes(), specialWords);
+                        String strSorterSpecialWord = ToStringConverter.convertSortedSpecialWord(task10Part2.getSortedSpecialWordIndexes(), specialWords);
                         Printer.printInConsoleMessage(strSorterSpecialWord);
                         break;
                     case 0:

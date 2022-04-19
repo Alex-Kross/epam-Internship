@@ -4,7 +4,7 @@ import com.epam.jwd.task2.model.entity.CompositeTextElement;
 import com.epam.jwd.task2.model.entity.RegEx;
 import com.epam.jwd.task2.model.entity.composite.Text;
 import com.epam.jwd.task2.model.logic.exception.implEmptyException.FileEmptyException;
-import com.epam.jwd.task2.util.RemoverLastLineBrake;
+import com.epam.jwd.task2.util.LastLineBrakeRemover;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +32,7 @@ public class TextParser {
             parser.parse(listStringOfText[i], textElement);
             if (i+1 >= listStringOfText.length){
                 // remove last line brake of the end int the text
-                RemoverLastLineBrake.remove((Text) textElement);
+                LastLineBrakeRemover.remove((Text) textElement);
             }
         }
     }

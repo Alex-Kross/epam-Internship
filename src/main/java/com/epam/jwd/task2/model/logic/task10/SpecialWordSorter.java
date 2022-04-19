@@ -17,7 +17,7 @@ import java.util.Map;
  * @author Karpuk A.U.
  * @version 1.1 20.2.2022
  */
-public class SorterSpecialWord {
+public class SpecialWordSorter {
     /**
      * Contain map for total number special words in text.
      * Key is index of sentence.
@@ -44,7 +44,7 @@ public class SorterSpecialWord {
      *
      * @param numberSpecialWords map for number special words in each sentence.
      */
-    public SorterSpecialWord(Map<Integer, List<Integer>> numberSpecialWords) {
+    public SpecialWordSorter(Map<Integer, List<Integer>> numberSpecialWords) {
         if (numberSpecialWords == null) {
             throw new NullPointerException("Map of number special words is null");
         }

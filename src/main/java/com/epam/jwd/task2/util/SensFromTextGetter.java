@@ -17,7 +17,7 @@ import java.util.List;
  * @author Karpuk A.U.
  * @version 1.1 20.2.2022
  * */
-public class GetterSensFromText {
+public class SensFromTextGetter {
     /**
      * Takes only sentences from textElement and return list of sentences
      *

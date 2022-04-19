@@ -14,7 +14,7 @@ import java.util.List;
  * @author Karpuk A.U.
  * @version 1.1 20.2.2022
  * */
-public class RemoverLastLineBrake {
+public class LastLineBrakeRemover {
     /**
      * Remove last line brake in the end of textElement
      * Retrieve last paragraph from Text then retrieve last sentences or
